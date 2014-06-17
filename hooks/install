@@ -25,17 +25,18 @@ def install():
 
     os.chdir(config.CF_DIR)
 
-    # git reset --hard 
     subprocess.check_call(
         [
-            'git', 'clone', '--depth', '1', charm_config['repository'], ADMIN_UI_DIR
+            'git', 'clone', '--depth', '1', charm_config['repository'], config.ADMIN_UI_DIR
         ],
-        cwd=CF_DIR
+        cwd=config.CF_DIR
     )
     subprocess.check_call(
-        ['git', 'reset', '--hard', charm_config['commit']],cwd=ADMIN_UI_DIR
+        ['git', 'reset', '--hard', charm_config['commit']], cwd=config.ADMIN_UI_DIR
     )
-    subprocess.check_call(['bundle'], cwd=ADMIN_UI_DIR)
+    subprocess.check_call(['bundle'], cwd=config.ADMIN_UI_DIR)
+
+    host.chownr(config.CF_DIR, 'vcap', 'vcap')
 
 
 if __name__ == '__main__':

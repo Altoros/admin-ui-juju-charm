@@ -1,7 +1,7 @@
 ---
 bind_address: 0.0.0.0
 cloud_controller_discovery_interval: 300
-cloud_controller_ssl_verify_none: true
+cloud_controller_ssl_verify_none: false
 cloud_controller_uri: http://api.{{ router[0]['domain'] }}
 component_connection_retries: 2
 data_file: data/data.json
@@ -13,7 +13,7 @@ mbus: nats://{{ nats[0]["user"] }}:{{ nats[0]["password"] }}@{{ nats[0]["address
 monitored_components: [NATS, CloudController, DEA, HealthManager, Router, -Provisioner, ALL]
 nats_discovery_interval: 30
 nats_discovery_timeout: 10
-port: {{ config['port'] }}
+port: {{ port }}
 # receiver_emails: [ ]
 # sender_email:
 #   server: 10.10.10.10

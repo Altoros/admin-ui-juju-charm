@@ -6,8 +6,8 @@ from charmhelpers.fetch import (
 
 
 def prepare_cloudfoundry_environment(config_data, packages):
-	if config_data.get('source') is not None:
-	    add_source(config_data['source'], config_data.get('key'))
-	    apt_update(fatal=True)
+    if config_data.get('source') is not None:
+        add_source(config_data['source'], config_data.get('key'))
+        apt_update(fatal=True)
     apt_install(packages=filter_installed_packages(packages), fatal=True)
     host.adduser('vcap')

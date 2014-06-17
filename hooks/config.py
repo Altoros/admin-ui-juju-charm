@@ -6,7 +6,7 @@ from charmhelpers.contrib.cloudfoundry import contexts
 __all__ = ['ADMIN_UI_PACKAGES', 'CF_DIR', 'ADMIN_UI_DIR',
            'ADMIN_UI_CONFIG_PATH']
 
-ADMIN_UI_PACKAGES = ['git', 'ruby1.9.3']
+ADMIN_UI_PACKAGES = ['git', 'ruby1.9.3', 'bundler']
 
 CF_DIR = '/var/lib/cloudfoundry'
 ADMIN_UI_DIR = os.path.join(CF_DIR, 'cfadminui')
@@ -17,7 +17,7 @@ SERVICES = [
     {
         'service': 'cf-admin-ui',
         'required_data': [contexts.NatsRelation(),
-                          contexts.CloudControllerRelation(),
+                          contexts.RouterRelation(),
                           hookenv.config()],
         'data_ready': [
             services.template(source='cf-admin-ui.conf',

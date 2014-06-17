@@ -8,5 +8,7 @@ categories:
 requires:
   nats:
     interface: nats
-  cc:
-    interface: cf-cloud-controller
+  router:
+    interface: router
+  # cc:
+  #   interface: cf-cloud-controller

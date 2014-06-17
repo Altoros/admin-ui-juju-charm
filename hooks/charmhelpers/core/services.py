@@ -340,9 +340,10 @@ class PortManagerCallback(ManagerCallback):
             with open(port_file) as fp:
                 old_ports = fp.read().split(',')
             for old_port in old_ports:
-                old_port = int(old_port)
-                if old_port not in new_ports:
-                    hookenv.close_port(old_port)
+                if bool(old_port):
+                    old_port = int(old_port)
+                    if old_port not in new_ports:
+                        hookenv.close_port(old_port)
         with open(port_file, 'w') as fp:
             fp.write(','.join(str(port) for port in new_ports))
         for port in new_ports:
