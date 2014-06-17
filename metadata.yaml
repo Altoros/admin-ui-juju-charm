@@ -1,0 +1,12 @@
+name: cf-dea
+summary: Droplet Execution Agent(DEA) is a component of CloudFoundry PAAS.
+maintainer: cf-charmers <cf-charmers@lists.launchpad.net>
+description: |
+  The Droplet Execution Agent manages application instances, tracks started instances, and broadcasts state messages. For more information see - https://github.com/cloudfoundry/dea_ng
+categories:
+  - misc
+requires:
+  nats:
+    interface: nats
+  cc:
+    interface: controller

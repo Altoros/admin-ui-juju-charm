@@ -1,0 +1,10 @@
+destination: hooks/charmhelpers
+branch: lp:~cf-charmers/charm-helpers/cloud-foundry/
+include:
+  - core
+  - fetch
+  - payload.execd
+  - contrib.openstack
+  - contrib.hahelpers
+  - contrib.storage
+  - contrib.cloudfoundry

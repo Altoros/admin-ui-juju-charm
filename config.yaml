@@ -1,0 +1,13 @@
+options:
+  port: 
+    type: int
+    default: 8070
+    description: "Port for the admin-ui to listen to."
+  repository:
+    type: string
+    default: "https://github.com/cloudfoundry-incubator/admin-ui.git"
+    description: "Github repository of admin-ui that is used to clone project."
+  commit:
+    type: string
+    default: '2cc84f9f93a5d6e0678d4116466c53fe0442c0be'
+    description: "Commit SHA to use when getting source code for admin-ui."

@@ -1,0 +1,42 @@
+#!/usr/bin/env python
+# vim: et ai ts=4 sw=4:
+import os
+import glob
+import shutil
+import subprocess
+
+from charmhelpers.core import hookenv, host
+from charmhelpers.contrib.cloudfoundry.common import (
+    prepare_cloudfoundry_environment
+)
+
+import config
+
+CHARM_DIR = hookenv.charm_dir()
+
+def install():
+    charm_config = hookenv.config()
+    prepare_cloudfoundry_environment(charm_config, config.ADMIN_UI_PACKAGES)
+    dirs = [config.CF_DIR]
+            # config.ADMIN_UI_DIR]
+
+    for item in dirs:
+        host.mkdir(item, owner='vcap', group='vcap', perms=0775)
+
+    os.chdir(config.CF_DIR)
+
+    # git reset --hard 
+    subprocess.check_call(
+        [
+            'git', 'clone', '--depth', '1', charm_config['repository'], ADMIN_UI_DIR
+        ],
+        cwd=CF_DIR
+    )
+    subprocess.check_call(
+        ['git', 'reset', '--hard', charm_config['commit']],cwd=ADMIN_UI_DIR
+    )
+    subprocess.check_call(['bundle'], cwd=ADMIN_UI_DIR)
+
+
+if __name__ == '__main__':
+    install()
