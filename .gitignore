@@ -1,2 +1,10 @@
 .bzr
 .bzrignore
+*.pyc
+*.swp
+.ropeproject/
+.idea/
+.venv
+.coverage
+.noseids
+.DS_Store

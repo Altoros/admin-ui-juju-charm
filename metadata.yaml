@@ -9,4 +9,4 @@ requires:
   nats:
     interface: nats
   cc:
-    interface: controller
+    interface: cf-cloud-controller

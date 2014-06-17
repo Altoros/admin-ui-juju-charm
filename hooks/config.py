@@ -18,12 +18,12 @@ SERVICES = [
         'service': 'cf-admin-ui',
         'required_data': [contexts.NatsRelation(),
                           contexts.CloudControllerRelation(),
-                          config()],
+                          hookenv.config()],
         'data_ready': [
             services.template(source='cf-admin-ui.conf',
                               target='/etc/init/cf-admin-ui.conf'),
             services.template(source='default.yml',
                               target=ADMIN_UI_CONFIG_PATH),
         ]
-    },
+    }
 ]
