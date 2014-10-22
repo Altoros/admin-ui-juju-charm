@@ -1,5 +1,5 @@
 import os
-import sys
+import re
 from collections import Iterable
 from charmhelpers.core import templating
 from charmhelpers.core import host
@@ -107,11 +107,21 @@ class ServiceManager(object):
         """
         Handle the current hook by doing The Right Thing with the registered services.
         """
-        hook_name = os.path.basename(sys.argv[0])
+        hook_name = hookenv.hook_name()
         if hook_name == 'stop':
             self.stop_services()
         else:
+            self.provide_data()
             self.reconfigure_services()
+
+    def provide_data(self):
+        hook_name = hookenv.hook_name()
+        for service in self.services.values():
+            for provider in service.get('provided_data', []):
+                if re.match(r'{}-relation-(joined|changed)'.format(provider.name), hook_name):
+                    data = provider.provide_data()
+                    if provider._is_ready(data):
+                        hookenv.relation_set(None, data)
 
     def reconfigure_services(self, *service_names):
         """
@@ -124,7 +134,7 @@ class ServiceManager(object):
             if self.is_ready(service_name):
                 self.fire_event('data_ready', service_name)
                 self.fire_event('start', service_name, default=[
-                    host.service_restart,
+                    service_restart,
                     open_ports])
                 self.save_ready(service_name)
             else:
@@ -132,7 +142,7 @@ class ServiceManager(object):
                     self.fire_event('data_lost', service_name)
                 self.fire_event('stop', service_name, default=[
                     close_ports,
-                    host.service_stop])
+                    service_stop])
                 self.save_lost(service_name)
 
     def stop_services(self, *service_names):
@@ -144,7 +154,7 @@ class ServiceManager(object):
         for service_name in service_names or self.services.keys():
             self.fire_event('stop', service_name, default=[
                 close_ports,
-                host.service_stop])
+                service_stop])
 
     def get_service(self, service_name):
         """
@@ -218,6 +228,7 @@ class RelationContext(dict):
     The generated context will be namespaced under the interface type, to prevent
     potential naming conflicts.
     """
+    name = None
     interface = None
     required_keys = []
 
@@ -240,7 +251,7 @@ class RelationContext(dict):
         """
         Returns True if all of the `required_keys` are available from any units.
         """
-        ready = len(self.get(self.interface, [])) > 0
+        ready = len(self.get(self.name, [])) > 0
         if not ready:
             hookenv.log('Incomplete relation: {}'.format(self.__class__.__name__), hookenv.DEBUG)
         return ready
@@ -255,7 +266,7 @@ class RelationContext(dict):
     def get_data(self):
         """
         Retrieve the relation data for each unit involved in a realtion and,
-        if complete, store it in a list under `self[self.interface]`.  This
+        if complete, store it in a list under `self[self.name]`.  This
         is automatically called when the RelationContext is instantiated.
 
         The units are sorted lexographically first by the service ID, then by
@@ -279,15 +290,21 @@ class RelationContext(dict):
         set of data came from, you'll need to extend this class to preserve
         that information.
         """
-        if not hookenv.relation_ids(self.interface):
+        if not hookenv.relation_ids(self.name):
             return
 
-        ns = self.setdefault(self.interface, [])
-        for rid in sorted(hookenv.relation_ids(self.interface)):
+        ns = self.setdefault(self.name, [])
+        for rid in sorted(hookenv.relation_ids(self.name)):
             for unit in sorted(hookenv.related_units(rid)):
                 reldata = hookenv.relation_get(rid=rid, unit=unit)
                 if self._is_ready(reldata):
                     ns.append(reldata)
+
+    def provide_data(self):
+        """
+        Return data to be relation_set for this interface.
+        """
+        return {}
 
 
 class ManagerCallback(object):
@@ -351,6 +368,27 @@ class PortManagerCallback(ManagerCallback):
                 hookenv.open_port(port)
             elif event_name == 'stop':
                 hookenv.close_port(port)
+
+
+def service_stop(service_name):
+    """
+    Wrapper around host.service_stop to prevent spurious "unknown service"
+    messages in the logs.
+    """
+    if host.service_running(service_name):
+        host.service_stop(service_name)
+
+
+def service_restart(service_name):
+    """
+    Wrapper around host.service_restart to prevent spurious "unknown service"
+    messages in the logs.
+    """
+    if host.service_available(service_name):
+        if host.service_running(service_name):
+            host.service_restart(service_name)
+        else:
+            host.service_start(service_name)
 
 
 # Convenience aliases

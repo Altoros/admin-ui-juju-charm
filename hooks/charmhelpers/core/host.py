@@ -13,12 +13,12 @@ import string
 import subprocess
 import hashlib
 import shutil
-import apt_pkg
 from contextlib import contextmanager
 
 from collections import OrderedDict
 
 from hookenv import log
+from fstab import Fstab
 
 
 def service_start(service_name):
@@ -37,7 +37,8 @@ def service_restart(service_name):
 
 
 def service_reload(service_name, restart_on_failure=False):
-    """Reload a system service, optionally falling back to restart if reload fails"""
+    """Reload a system service, optionally falling back to restart if
+    reload fails"""
     service_result = service('reload', service_name)
     if not service_result and restart_on_failure:
         service_result = service('restart', service_name)
@@ -53,7 +54,7 @@ def service(action, service_name):
 def service_running(service):
     """Determine whether a system service is running"""
     try:
-        output = subprocess.check_output(['service', service, 'status'])
+        output = subprocess.check_output(['service', service, 'status'], stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError:
         return False
     else:
@@ -65,7 +66,12 @@ def service_running(service):
 
 def service_available(service_name):
     """Determine whether a system service is available"""
-    return service('status', service_name)
+    try:
+        subprocess.check_output(['service', service_name, 'status'], stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError:
+        return False
+    else:
+        return True
 
 
 def adduser(username, password=None, shell='/bin/bash', system_user=False):
@@ -161,7 +167,19 @@ def copy_file(src, dst, owner='root', group='root', perms=0444):
     os.chmod(dst, perms)
 
 
-def mount(device, mountpoint, options=None, persist=False):
+def fstab_remove(mp):
+    """Remove the given mountpoint entry from /etc/fstab
+    """
+    return Fstab.remove_by_mountpoint(mp)
+
+
+def fstab_add(dev, mp, fs, options=None):
+    """Adds the given device entry to the /etc/fstab file
+    """
+    return Fstab.add(dev, mp, fs, options=options)
+
+
+def mount(device, mountpoint, options=None, persist=False, filesystem="ext3"):
     """Mount a filesystem at a particular mountpoint"""
     cmd_args = ['mount']
     if options is not None:
@@ -172,9 +190,9 @@ def mount(device, mountpoint, options=None, persist=False):
     except subprocess.CalledProcessError, e:
         log('Error mounting {} at {}\n{}'.format(device, mountpoint, e.output))
         return False
+
     if persist:
-        # TODO: update fstab
-        pass
+        return fstab_add(device, mountpoint, filesystem, options=options)
     return True
 
 
@@ -186,9 +204,9 @@ def umount(mountpoint, persist=False):
     except subprocess.CalledProcessError, e:
         log('Error unmounting {}\n{}'.format(mountpoint, e.output))
         return False
+
     if persist:
-        # TODO: update fstab
-        pass
+        return fstab_remove(mountpoint)
     return True
 
 
@@ -215,13 +233,13 @@ def file_hash(path):
 def restart_on_change(restart_map, stopstart=False):
     """Restart services based on configuration files changing
 
-    This function is used a decorator, for example
+    This function is used a decorator, for example::
 
         @restart_on_change({
             '/etc/ceph/ceph.conf': [ 'cinder-api', 'cinder-volume' ]
             })
         def ceph_client_changed():
-            ...
+            pass  # your code here
 
     In this example, the cinder-api and cinder-volume services
     would be restarted if /etc/ceph/ceph.conf is changed by the
@@ -317,10 +335,13 @@ def get_nic_hwaddr(nic):
 
 def cmp_pkgrevno(package, revno, pkgcache=None):
     '''Compare supplied revno with the revno of the installed package
-       1 => Installed revno is greater than supplied arg
-       0 => Installed revno is the same as supplied arg
-      -1 => Installed revno is less than supplied arg
+
+    *  1 => Installed revno is greater than supplied arg
+    *  0 => Installed revno is the same as supplied arg
+    * -1 => Installed revno is less than supplied arg
+
     '''
+    import apt_pkg
     if not pkgcache:
         apt_pkg.init()
         pkgcache = apt_pkg.Cache()

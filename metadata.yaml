@@ -4,7 +4,8 @@ maintainer: cf-charmers <cf-charmers@lists.launchpad.net>
 description: |
   cf-admin-ui
 categories:
-  - misc
+  - applications
+subordinate: false
 requires:
   nats:
     interface: nats
