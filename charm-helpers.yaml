@@ -1,5 +1,5 @@
-destination: hooks/charmhelpers
-branch: lp:~cf-charmers/charm-helpers/cloud-foundry/
+destination: lib
+branch: lp:charm-helpers
 include:
   - core
   - fetch
@@ -7,4 +7,4 @@ include:
   - contrib.openstack
   - contrib.hahelpers
   - contrib.storage
-  - contrib.cloudfoundry
+  # - contrib.cloudfoundry

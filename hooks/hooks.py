@@ -18,11 +18,6 @@ log = hookenv.log
 
 SERVICE = 'admin-ui'
 
-
-class LogstashIndexerContext(dict):
-    input_relations = [ RedisRelation ]
-
-
 manager = services.ServiceManager([
     {
         'service': 'admin-ui',
@@ -46,12 +41,12 @@ manager = services.ServiceManager([
         'stop': runit_stop,
     },
 ])
-manager.manage()
 
 
 @hooks.hook('install')
 def install():
-    manager.manage()
+    # manager.manage()
+    
 
 
 @hooks.hook('config-changed')
