@@ -8,7 +8,7 @@ The Administration Web UI provides metrics and operations data for Cloud Foundry
 In order to execute, the Administration UI needs to be able to access the following resources:
 - NATS
 - Cloud Controller REST API
-<!-- - UAA REST API -->
+
 You can find charms to install them here: cf-nats charm, cf-cloud-controller charm
 
 
@@ -23,3 +23,8 @@ juju add-relation admin-ui nats
 juju add-relation admin-ui cc
 <!-- juju add-relation admin-ui uaa -->
 ```
+
+
+
+
+
