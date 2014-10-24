@@ -6,7 +6,7 @@ import subprocess
 sys.path.insert(0, os.path.join(os.environ['CHARM_DIR'], 'lib'))
 
 from charmhelpers.core import ( hookenv, host, services )
-from charmhelpers.fetch import giturl
+from charmhelpers.fetch import ( giturl, apt_install, filter_installed_packages )
 from cloudfoundry import contexts
 import config
 
