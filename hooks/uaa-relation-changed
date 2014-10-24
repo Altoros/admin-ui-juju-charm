@@ -6,8 +6,8 @@ import subprocess
 sys.path.insert(0, os.path.join(os.environ['CHARM_DIR'], 'lib'))
 
 from charmhelpers.core import ( hookenv, host, services )
-import charmhelpers.fetch.giturl
-import cloudfoundry.contexts
+from charmhelpers.fetch import giturl
+from cloudfoundry import contexts
 
 
 hooks = hookenv.Hooks()

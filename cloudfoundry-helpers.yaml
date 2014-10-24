@@ -1,4 +1,9 @@
 destination: lib/cloudfoundry
-branch: lp:charm-helpers
+branch: lp:cloudfoundry
 include:
-  - contexts
+  - cloudfoundry/contexts
+  - cloudfoundry/path
+  - cloudfoundry/releases
+  # - cloudfoundry/services
+  - cloudfoundry/utils
+  - cloudfoundry/__init__
