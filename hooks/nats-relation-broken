@@ -8,7 +8,7 @@ sys.path.insert(0, os.path.join(os.environ['CHARM_DIR'], 'lib'))
 from charmhelpers.core import ( hookenv, host, services )
 from charmhelpers.fetch import giturl
 from cloudfoundry import contexts
-
+import config
 
 hooks = hookenv.Hooks()
 log = hookenv.log
