@@ -9,7 +9,12 @@ subordinate: false
 requires:
   nats:
     interface: nats
-  router:
-    interface: router
-  # cc:
-  #   interface: cf-cloud-controller
+  cc:
+    interface: controller
+  cc-db:
+    interface: controller-db
+  uaa:
+    interface: http
+  uaa-db:
+    interface: uaa-db
+

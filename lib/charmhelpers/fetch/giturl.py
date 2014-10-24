@@ -29,6 +29,7 @@ class GitUrlFetchHandler(BaseFetchHandler):
 
         repo = Repo.clone_from(source, dest)
         repo.git.checkout(branch)
+        return repo
 
     def install(self, source, branch="master"):
         url_parts = self.parse_url(source)
