@@ -10,6 +10,8 @@ from charmhelpers.core import (
     host
 )
 
+import charmhelpers.fetch.giturl
+
 import charmhelpers.core.services
 from charmhelpers.core.services import RelationContext
 
@@ -22,7 +24,14 @@ manager = services.ServiceManager([
     {
         'service': 'admin-ui',
         # 'ports': [80, 443],
-        'required_data': [, {'basepath': '/opt/logstash'}],
+        'required_data': [
+            contexts.NatsRelation,
+            contexts.CloudFoundryCredentials, 
+            # contexts.RouterRelation, 
+            contexts.UAARelation,
+            contexts.UAADBRelation,
+            contexts.CloudControllerDBRelation
+        ],
         'data_ready': [
             services.template(source='admin-ui.conf',
                               target='/etc/init',
@@ -46,7 +55,7 @@ manager = services.ServiceManager([
 @hooks.hook('install')
 def install():
     # manager.manage()
-    
+
 
 
 @hooks.hook('config-changed')

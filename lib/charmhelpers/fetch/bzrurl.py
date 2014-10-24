@@ -4,7 +4,13 @@ from charmhelpers.fetch import (
     UnhandledSource
 )
 from charmhelpers.core.host import mkdir
-from bzrlib.branch import Branch
+
+try:
+    from bzrlib.branch import Branch
+except ImportError:
+    from charmhelpers.fetch import apt_install
+    apt_install("python-bzrlib")
+    from bzrlib.branch import Branch
 
 
 class BzrUrlFetchHandler(BaseFetchHandler):

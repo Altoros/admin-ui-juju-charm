@@ -96,7 +96,7 @@ class OSConfigTemplate(object):
 
     def complete_contexts(self):
         '''
-        Return a list of interfaces that have satisfied contexts.
+        Return a list of interfaces that have atisfied contexts.
         '''
         if self._complete_contexts:
             return self._complete_contexts
