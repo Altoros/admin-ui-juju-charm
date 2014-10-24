@@ -7,9 +7,8 @@ import subprocess
 
 from charmhelpers.core import hookenv, host
 from charmhelpers.fetch import hookenv, host
-from charmhelpers.contrib.cloudfoundry.common import (
-    prepare_cloudfoundry_environment
-)
+
+from charmhelpers.contrib.cloudfoundry.common import ()
 
 import config
 

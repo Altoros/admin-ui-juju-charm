@@ -5,14 +5,12 @@ import sys
 
 sys.path.insert(0, os.path.join(os.environ['CHARM_DIR'], 'lib'))
 
-from charmhelpers.core import (
-    hookenv,
-    host
-)
-
+from charmhelpers.core import ( hookenv, host )
 import charmhelpers.fetch.giturl
 
 import charmhelpers.core.services
+import cloudfoundry.contexts
+
 from charmhelpers.core.services import RelationContext
 
 hooks = hookenv.Hooks()
@@ -23,7 +21,7 @@ SERVICE = 'admin-ui'
 manager = services.ServiceManager([
     {
         'service': 'admin-ui',
-        # 'ports': [80, 443],
+        'ports': [8070],
         'required_data': [
             contexts.NatsRelation,
             contexts.CloudFoundryCredentials, 
@@ -36,57 +34,48 @@ manager = services.ServiceManager([
             services.template(source='admin-ui.conf',
                               target='/etc/init',
                               owner='logstash', perms=0400),
-            services.template(source='admin-ui.conf',
+            services.template(source='default.yml',
                               target='/etc/init',
                               owner='logstash', perms=0400),
         ],
-    },
-    {
-        'service': 'spadesd',
-        'data_ready': services.template(source='spadesd_run.j2',
-                                        target='/etc/sv/spadesd/run',
-                                        perms=0555),
-        'start': runit_start,
-        'stop': runit_stop,
-    },
+        'start': upstart_start('admin-ui'),
+        'stop': upstart_stop('admin-ui')
+    }
 ])
 
 
 @hooks.hook('install')
 def install():
-    # manager.manage()
-
+    manager.manage()
 
 
 @hooks.hook('config-changed')
 def config_changed():
-    config = hookenv.config()
-
-    for key in config:
-        if config.changed(key):
-            log("config['{}'] changed from {} to {}".format(
-                key, config.previous(key), config[key]))
-
-    config.save()
-    start()
+    log('Config changed hook is called.')
+    manager.manage()
 
 
 @hooks.hook('upgrade-charm')
 def upgrade_charm():
-    log('Upgrading admin-ui')
+    log('Upgrading admin-ui.')
+    manager.manage()
 
 
 @hooks.hook('start')
 def start():
-    host.service_restart(SERVICE) or host.service_start(SERVICE)
+    log('Start admin-ui.')
+    manager.manage()
+    # host.service_restart(SERVICE) or host.service_start(SERVICE)
 
 
 @hooks.hook('stop')
 def stop():
-    host.service_stop(SERVICE)
+    log('Stop admin-ui.')
+    manager.manage()
+    # host.service_stop(SERVICE)
 
 
 if __name__ == "__main__":
     # execute a hook based on the name the program is called by
-    # hooks.execute(sys.argv)
-    manager.manage()
+    hooks.execute(sys.argv)
+
