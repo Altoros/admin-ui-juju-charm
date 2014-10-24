@@ -2,7 +2,6 @@ import os
 sys.path.insert(0, os.path.join(os.environ['CHARM_DIR'], 'lib'))
 
 from charmhelpers.core import ( hookenv, host, services )
-from charmhelpers.core.services.helpers import 
 from cloudfoundry import contexts
 
 __all__ = ['ADMIN_UI_PACKAGES', 'CF_DIR', 'ADMIN_UI_DIR',
