@@ -15,7 +15,7 @@ ADMIN_UI_DIR = os.path.join(CF_DIR, 'admin-ui')
 ADMIN_UI_CONFIG_PATH = os.path.join(ADMIN_UI_DIR, 'config', 'default.yml')
 
 upstart_template_context = {'working_directory': ADMIN_UI_DIR, 'config_path': ADMIN_UI_CONFIG_PATH, 
-                            'user': 'vcap', 'group', 'vcap'}
+                            'user': 'vcap', 'group': 'vcap'}
 
 SERVICE = [
     {
