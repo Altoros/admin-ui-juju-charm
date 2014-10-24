@@ -1,4 +1,5 @@
 import os
+import sys
 sys.path.insert(0, os.path.join(os.environ['CHARM_DIR'], 'lib'))
 
 from charmhelpers.core import ( hookenv, host, services )
