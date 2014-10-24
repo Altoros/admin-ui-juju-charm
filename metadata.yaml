@@ -1,8 +1,8 @@
-name: cf-admin-ui
-summary: cf-admin-ui
+name: admin-ui
+summary: admin-ui
 maintainer: cf-charmers <cf-charmers@lists.launchpad.net>
 description: |
-  cf-admin-ui
+	admin-ui
 categories:
   - applications
 subordinate: false

@@ -168,6 +168,19 @@ class UAARelation(RelationContext):
         }
 
 
+class UAADBRelation(RelationContext):
+    name = 'uaa-db'
+    interface = 'uaa-db'
+    required_keys = MysqlRelation.required_keys
+
+    @classmethod
+    def send_data(cls, job_name):
+        # using send_data instead of provide_data to delay it until data_ready
+        data = MysqlRelation()['db'][0]
+        for rid in hookenv.relation_ids(cls.name):
+            hookenv.relation_set(rid, data)
+
+
 class LoginRelation(RelationContext):
     name = 'login'
     interface = 'http'
