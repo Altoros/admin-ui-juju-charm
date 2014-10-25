@@ -22,7 +22,7 @@ def install():
     apt_install(packages=filter_installed_packages(config.ADMIN_UI_PACKAGES), fatal=True)
     host.adduser('vcap')
     host.mkdir(config.CF_DIR, owner='vcap', group='vcap', perms=0775)
-    repo = git.clone(charm_config['repository'], config.ADMIN_UI_DIR, 'master')
+    repo = git.clone(charm_config['repository'], config.ADMIN_UI_DIR, charm_config['branch'])
     if bool(charm_config['commit']):
         repo.head.reference = charm_config['commit']
         repo.head.reset(index=True, working_tree=True)
