@@ -3,7 +3,7 @@ bind_address: 0.0.0.0
 ccdb_uri: mysql2://{{ ccdb[0]['user'] }}:{{ ccdb[0]['password'] }}@{{ ccdb[0]['host'] }}:{{ ccdb[0]['port'] }}/{{ ccdb[0]['database'] }}
 cloud_controller_discovery_interval: 300
 cloud_controller_ssl_verify_none: false
-cloud_controller_uri: http://api.{{ router[0]['domain'] }}
+cloud_controller_uri: http://api.{{ orchestrator[0]['domain'] }}
 component_connection_retries: 2
 data_file: data/data.json
 db_uri: sqlite://data/store.db
