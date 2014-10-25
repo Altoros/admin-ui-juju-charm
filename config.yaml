@@ -5,9 +5,15 @@ options:
     description: "Port for the admin-ui to listen to."
   repository:
     type: string
-    default: "https://github.com/cloudfoundry-incubator/admin-ui.git"
+    default: "https://github.com/allomov/admin-ui.git"
     description: "Github repository of admin-ui that is used to clone project."
+  branch:
+    type: string
+    default: 'juju-charm-version'
+    description: "Git branch of amdin-ui project to fetch."
   commit:
     type: string
-    default: '0d56f45280537e87c90b9c61c6340293ce0446a0'
-    description: "Commit SHA to use when getting source code for admin-ui."
+    default: ''
+    description: | 
+        Commit SHA to use when getting source code for admin-ui. 
+        If it is empty, the latest commit in a branch is used.
