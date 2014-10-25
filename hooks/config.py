@@ -25,7 +25,8 @@ SERVICE = [
         'service': 'admin-ui',
         'ports': [charm_config['port']]
         'required_data': [contexts.NatsRelation(),
-                          contexts.CloudControllerRelation,
+                          # contexts.CloudControllerRelation,
+                          contexts.OrchestratorRelation,
                           contexts.CloudControllerDBRelation,
                           contexts.UAARelation,
                           contexts.UAADBRelation,

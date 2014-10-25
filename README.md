@@ -8,22 +8,29 @@ The Administration Web UI provides metrics and operations data for Cloud Foundry
 In order to execute, the Administration UI needs to be able to access the following resources:
 - NATS
 - Cloud Controller REST API
+- Cloud Controller DB
+- UAA 
+- UAA DB
 
 You can find charms to install them here: cf-nats charm, cf-cloud-controller charm
 
 
 Usage
 =====
-Obviously used in a bundle with other CF components.
+Obviously used in a bundle with other CF components deployed with juju charms.
 To deploy the DEA service:
-```
-git clone ...
-juju deploy --repository ../cf-admin-ui admin-ui
+```bash
+# create folder structure
+mkdir trusty
+git clone https://github.com/Altoros/admin-ui-juju-charm.git trusty/admin-ui
+# deploy admin-ui charm
+juju deploy --repository . local:trusty/admin-ui admin-ui
 juju add-relation admin-ui nats
 juju add-relation admin-ui cc
-<!-- juju add-relation admin-ui uaa -->
+juju add-relation admin-ui cc-db
+juju add-relation admin-ui uaa
+juju add-relation admin-ui uaa-db
 ```
-
 
 
 

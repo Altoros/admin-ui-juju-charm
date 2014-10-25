@@ -19,13 +19,12 @@ manager = services.ServiceManager(config.SERVICE)
 @hooks.hook('install')
 def install():
     charm_config = hookenv.config()
+    apt_install(packages=filter_installed_packages(config.ADMIN_UI_PACKAGES), fatal=True)
     host.adduser('vcap')
     host.mkdir(config.CF_DIR, owner='vcap', group='vcap', perms=0775)
-    apt_install(packages=filter_installed_packages(config.ADMIN_UI_PACKAGES), fatal=True)
     repo = git.clone(charm_config['repository'], config.ADMIN_UI_DIR, 'master')
     repo.head.reference = charm_config['commit']
     repo.head.reset(index=True, working_tree=True)
-    os.chdir(config.ADMIN_UI_DIR)
     subprocess.check_call(['bundle', 'install', '--standalone', 
                                                 '--without', 'test', 'development'], cwd=config.ADMIN_UI_DIR)
 

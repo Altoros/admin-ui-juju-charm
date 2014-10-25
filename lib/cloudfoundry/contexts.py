@@ -376,7 +376,7 @@ class CloudControllerRelation(RelationContext):
 
 
 class CloudControllerDBRelation(RelationContext):
-    name = 'cc-db'
+    name = 'ccdb'
     interface = 'controller-db'
     required_keys = MysqlRelation.required_keys
 
