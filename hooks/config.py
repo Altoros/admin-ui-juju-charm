@@ -23,12 +23,12 @@ upstart_template_context = {'working_directory': ADMIN_UI_DIR, 'config_path': AD
 SERVICE = [
     {
         'service': 'admin-ui',
-        'ports': [charm_config['port']]
+        'ports': [charm_config['port']],
         'required_data': [contexts.NatsRelation(),
-                          contexts.OrchestratorRelation,
-                          contexts.CloudControllerDBRelation,
-                          contexts.UAARelation,
-                          contexts.UAADBRelation,
+                          contexts.OrchestratorRelation(),
+                          contexts.CloudControllerDBRelation(),
+                          contexts.UAARelation(),
+                          contexts.UAADBRelation(),
                           hookenv.config(),
                           upstart_template_context],
         'data_ready': [
