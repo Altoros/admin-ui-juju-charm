@@ -23,7 +23,8 @@ def install():
     host.mkdir(config.CF_DIR, owner='vcap', group='vcap', perms=0775)
     apt_install(packages=filter_installed_packages(config.ADMIN_UI_PACKAGES), fatal=True)
     repo = git.clone(charm_config['repository'], config.ADMIN_UI_DIR, 'master')
-    repo.reset('--hard', charm_config['commit'])
+    repo.head.reference = charm_config['commit']
+    repo.head.reset(index=True, working_tree=True)
     chdir(os.path.join(config.working_directory, 'admin-ui'))
     subprocess.check_call(['bundle', 'install', '--standalone', 
                                                 '--without', 'test', 'development'], cwd=config.ADMIN_UI_DIR)
