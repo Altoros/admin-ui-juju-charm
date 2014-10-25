@@ -25,7 +25,7 @@ def install():
     repo = git.clone(charm_config['repository'], config.ADMIN_UI_DIR, 'master')
     repo.head.reference = charm_config['commit']
     repo.head.reset(index=True, working_tree=True)
-    os.chdir(os.path.join(config.ADMIN_UI_DIR, 'admin-ui'))
+    os.chdir(config.ADMIN_UI_DIR)
     subprocess.check_call(['bundle', 'install', '--standalone', 
                                                 '--without', 'test', 'development'], cwd=config.ADMIN_UI_DIR)
 
