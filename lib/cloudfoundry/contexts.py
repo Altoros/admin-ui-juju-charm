@@ -169,8 +169,8 @@ class UAARelation(RelationContext):
 
 
 class UAADBRelation(RelationContext):
-    name = 'uaa-db'
-    interface = 'uaa-db'
+    name = 'uaadb'
+    interface = 'uaadb'
     required_keys = MysqlRelation.required_keys
 
     @classmethod

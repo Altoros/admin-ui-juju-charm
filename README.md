@@ -7,7 +7,6 @@ The Administration Web UI provides metrics and operations data for Cloud Foundry
 
 In order to execute, the Administration UI needs to be able to access the following resources:
 - NATS
-- Cloud Controller REST API
 - Cloud Controller DB
 - UAA 
 - UAA DB
@@ -27,9 +26,9 @@ git clone https://github.com/Altoros/admin-ui-juju-charm.git trusty/admin-ui
 juju deploy --repository . local:trusty/admin-ui admin-ui
 juju add-relation admin-ui nats
 juju add-relation admin-ui cc
-juju add-relation admin-ui cc-db
+juju add-relation admin-ui:ccdb cc:ccdb
 juju add-relation admin-ui uaa
-juju add-relation admin-ui uaa-db
+juju add-relation admin-ui:uaadb uaa:uaadb
 ```
 
 
