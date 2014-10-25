@@ -23,7 +23,7 @@ def install():
     host.adduser('vcap')
     host.mkdir(config.CF_DIR, owner='vcap', group='vcap', perms=0775)
     repo = git.clone(charm_config['repository'], config.ADMIN_UI_DIR, 'master')
-    if not charm_config['commit']:
+    if bool(charm_config['commit']):
         repo.head.reference = charm_config['commit']
         repo.head.reset(index=True, working_tree=True)
     subprocess.check_call(['bundle', 'install', '--standalone', 
