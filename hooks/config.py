@@ -2,8 +2,10 @@ import os
 import sys
 sys.path.insert(0, os.path.join(os.environ['CHARM_DIR'], 'lib'))
 
-from charmhelpers.core import ( hookenv, host, services )
+from charmhelpers.core import ( hookenv, services )
 from cloudfoundry import contexts
+
+charm_config = hookenv.config()
 
 __all__ = ['ADMIN_UI_PACKAGES', 'CF_DIR', 'ADMIN_UI_DIR',
            'ADMIN_UI_CONFIG_PATH', 'SERVICE']
@@ -21,6 +23,7 @@ upstart_template_context = {'working_directory': ADMIN_UI_DIR, 'config_path': AD
 SERVICE = [
     {
         'service': 'admin-ui',
+        'ports': [charm_config['port']]
         'required_data': [contexts.NatsRelation(),
                           contexts.CloudControllerRelation,
                           contexts.CloudControllerDBRelation,

@@ -9,5 +9,5 @@ options:
     description: "Github repository of admin-ui that is used to clone project."
   commit:
     type: string
-    default: '2cc84f9f93a5d6e0678d4116466c53fe0442c0be'
+    default: '0d56f45280537e87c90b9c61c6340293ce0446a0'
     description: "Commit SHA to use when getting source code for admin-ui."
