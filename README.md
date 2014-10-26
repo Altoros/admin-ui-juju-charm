@@ -32,6 +32,30 @@ juju add-relation admin-ui:uaadb uaa:uaadb
 juju add-relation admin-ui cloudfoundry
 ```
 
+Set uaa access properties:
+```
+gem install cf-uaac --no-ri --no-rdoc
 
+DOMAIN=10.244.0.34.xip.io
+ADMIN_SECRET=
 
+uaac target http://uaa.$DOMAIN
+uaac token client get admin -s $ADMIN_SECRET
 
+# Add 'scim.write' if not already there and re-get token
+uaac client update admin --authorities "`uaac client get admin | \
+    awk '/:/{e=0}/authorities:/{e=1;if(e==1){$1="";print}}'` scim.write"
+uaac token client get admin -s $ADMIN_SECRET
+
+# Create a new group and add the 'admin' user to it
+uaac group add admin_ui.admin
+uaac member add admin_ui.admin admin
+
+# Create the new UAA admin_ui_client
+uaac client add admin_ui_client \
+ --authorities cloud_controller.admin,cloud_controller.read,cloud_controller.write,openid,scim.read \
+ --authorized_grant_types authorization_code,client_credentials,refresh_token \
+ --autoapprove true \
+ --scope admin_ui.admin,admin_ui.user,openid \
+ -s admin_ui_secret
+```
