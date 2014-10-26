@@ -30,31 +30,14 @@ def install():
                                                 '--without', 'test', 'development'], cwd=config.ADMIN_UI_DIR)
 
 
-
-@hooks.hook('config-changed')
-def config_changed():
-    log('Config changed hook is called.')
-    manager.manage()
-
-
 @hooks.hook('upgrade-charm')
 def upgrade_charm():
     log('Upgrading admin-ui.')
-    manager.manage()
-
-
-@hooks.hook('start')
-def start():
-    log('Start admin-ui.')
-    manager.manage()
-
-
-@hooks.hook('stop')
-def stop():
-    log('Stop admin-ui.')
-    manager.manage()
 
 
 if __name__ == "__main__":
-    hooks.execute(sys.argv)
+    if hookenv.hook_name() == 'install':
+        hooks.execute(sys.argv)
+    else:
+        manager.manage()
 

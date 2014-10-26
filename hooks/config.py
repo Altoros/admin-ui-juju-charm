@@ -25,11 +25,11 @@ SERVICE = [
     {
         'service': 'admin-ui',
         'ports': [charm_config['port']],
-        'required_data': [contexts.NatsRelation,
-                          contexts.OrchestratorRelation,
-                          contexts.CloudControllerDBRelation,
-                          contexts.UAARelation,
-                          contexts.UAADBRelation,
+        'required_data': [contexts.NatsRelation(),
+                          contexts.OrchestratorRelation(),
+                          contexts.CloudControllerDBRelation(),
+                          contexts.UAARelation(),
+                          contexts.UAADBRelation(),
                           hookenv.config(),
                           upstart_template_context],
         'data_ready': [

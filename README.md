@@ -25,10 +25,11 @@ git clone https://github.com/Altoros/admin-ui-juju-charm.git trusty/admin-ui
 # deploy admin-ui charm
 juju deploy --repository . local:trusty/admin-ui admin-ui
 juju add-relation admin-ui nats
-juju add-relation admin-ui cc
+juju add-relation admin-ui:cc cc:cc
 juju add-relation admin-ui:ccdb cc:ccdb
-juju add-relation admin-ui uaa
+juju add-relation admin-ui:uaa uaa:uaa
 juju add-relation admin-ui:uaadb uaa:uaadb
+juju add-relation admin-ui cloudfoundry
 ```
 
 

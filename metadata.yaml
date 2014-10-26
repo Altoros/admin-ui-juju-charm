@@ -7,14 +7,16 @@ categories:
   - applications
 subordinate: false
 requires:
+  orchestrator:
+    interface: orchestrator
   nats:
     interface: nats
   cc:
     interface: controller
-  cc-db:
+  ccdb:
     interface: controller-db
   uaa:
     interface: http
-  uaa-db:
-    interface: uaa-db
+  uaadb:
+    interface: uaadb
 
