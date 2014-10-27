@@ -6,12 +6,13 @@ This charm provides the Cloud Foundry [Administration Web UI](https://github.com
 The Administration Web UI provides metrics and operations data for Cloud Foundry NG. It gathers data from the varz providers for the various Cloud Foundry components as well as from the Cloud Controller and UAA REST APIs.
 
 In order to execute, the Administration UI needs to be able to access the following resources:
+- Orchestrator (cloudfoundry charm itself)
 - NATS
 - Cloud Controller DB
-- UAA 
+- UAA
 - UAA DB
 
-You can find charms to install them here: cf-nats charm, cf-cloud-controller charm
+You can find charms for this relations here: [lp:~cf-charmers/charms/trusty/cloudfoundry/trunk](https://code.launchpad.net/~cf-charmers/charms/trusty/cloudfoundry/trunk).
 
 
 Usage
