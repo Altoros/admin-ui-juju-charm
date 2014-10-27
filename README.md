@@ -22,22 +22,25 @@ To deploy the DEA service:
 # create folder structure
 mkdir trusty
 git clone https://github.com/Altoros/admin-ui-juju-charm.git trusty/admin-ui
+
 # deploy admin-ui charm
 juju deploy --repository . local:trusty/admin-ui admin-ui
+juju add-relation admin-ui cloudfoundry
 juju add-relation admin-ui nats
 juju add-relation admin-ui:cc cc:cc
-juju add-relation admin-ui:ccdb cc:ccdb
 juju add-relation admin-ui:uaa uaa:uaa
+juju add-relation admin-ui:ccdb cc:ccdb
 juju add-relation admin-ui:uaadb uaa:uaadb
-juju add-relation admin-ui cloudfoundry
+juju expose admin-ui
 ```
 
-Set uaa access properties:
+In order to be able to login to admin-ui using UAA you will need to set UAA
+access properties for admin-ui:
 ```
 gem install cf-uaac --no-ri --no-rdoc
 
 DOMAIN=10.244.0.34.xip.io
-ADMIN_SECRET=
+ADMIN_SECRET=uaa_admin_secret
 
 uaac target http://uaa.$DOMAIN
 uaac token client get admin -s $ADMIN_SECRET

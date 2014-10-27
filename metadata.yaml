@@ -19,4 +19,3 @@ requires:
     interface: http
   uaadb:
     interface: uaadb
-
