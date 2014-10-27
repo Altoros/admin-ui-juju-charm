@@ -16,6 +16,8 @@ You can find charms to install them here: cf-nats charm, cf-cloud-controller cha
 
 Usage
 =====
+*WARNING!* This charm has been deployed and used with non-official version of Cloud Foundry juju charms [lp:~lomov-as/charms/trusty/cloudfoundry/trunk](https://code.launchpad.net/~lomov-as/charms/trusty/cloudfoundry/trunk).
+
 Obviously used in a bundle with other CF components deployed with juju charms.
 To deploy the DEA service:
 ```bash
